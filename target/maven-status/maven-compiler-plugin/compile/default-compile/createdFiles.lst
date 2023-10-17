@@ -6,7 +6,6 @@ telaprincipal\InterfaceDeControler$2.class
 cadastrarproduto\InserirProduto$2.class
 cadastrarproduto\InserirProduto$5.class
 cadastrarproduto\TelaCadastroProduto.class
-cliente\ViewLogin$1.class
 cadastrarproduto\TelaCadastroProduto$3.class
 cliente\ViewCadastro$7.class
 cliente\ViewCadastro$jTClientes.class
@@ -14,7 +13,6 @@ telaprincipal\TelaPrincipal.class
 cliente\ViewCadastro$5.class
 telaprincipal\TelaPrincipal$2.class
 cadastrarproduto\Produto.class
-cliente\ViewLogin$2.class
 cadastrarproduto\InserirProduto$1.class
 cliente\ViewCadastro$8.class
 cliente\ViewCadastro$1.class
@@ -28,9 +26,7 @@ paineldevenda\VendaItem.class
 telaprincipal\TelaPrincipal$3.class
 cadastrarproduto\TelaCadastroProduto$1.class
 cadastrarproduto\TelaCadastroProduto$4.class
-cliente\ViewLogin$3.class
 cliente\ViewCadastro$2.class
-cliente\ViewLogin.class
 paineldevenda\TelaDeVenda$6.class
 cadastrarproduto\InserirProduto$3.class
 telaprincipal\InterfaceDeControler$3.class
@@ -48,3 +44,4 @@ cliente\ViewCadastro$6.class
 paineldevenda\TelaDeVenda$7.class
 telaprincipal\InterfaceDeControler.class
 cadastrarproduto\TelaCadastroProduto$2.class
+telaprincipal\TelaPrincipal$4.class
