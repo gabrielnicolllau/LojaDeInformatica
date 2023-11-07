@@ -10,7 +10,7 @@ import model.VendaItem;
 
 public class TelaDeVenda extends javax.swing.JFrame {
 
-    private int produtoId; // Variável para armazenar o ID do Produto
+    private int produtoId; // Variável para armazenar o ID do Produtos
 
     // Crie listas para armazenar produtos por categoria
     private List<String> processadores = new ArrayList<>();
@@ -310,12 +310,12 @@ public class TelaDeVenda extends javax.swing.JFrame {
         if (categoriaSelecionada.equals("Selecione uma Categoria...")) {
             JOptionPane.showMessageDialog(rootPane, "Selecione uma categoria antes de adicionar um produto.");
         } else {
-            String nomeProdutoSelecionado = cboProdutos.getSelectedItem().toString(); // Obtenha o nome do Produto selecionado
+            String nomeProdutoSelecionado = cboProdutos.getSelectedItem().toString(); // Obtenha o nome do Produtos selecionado
             int quantidade = (int) opcQuantidade.getValue(); // Obtenha a quantidade
 
             // Verifique se a quantidade é maior que zero
             if (quantidade > 0) {
-                // Aqui você precisa criar um objeto Produto com base no nome do Produto
+                // Aqui você precisa criar um objeto Produtos com base no nome do Produtos
                 Produto novoProduto = new Produto();
 
                 novoProduto.getIdProduto();
