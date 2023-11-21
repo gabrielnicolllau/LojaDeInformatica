@@ -1,38 +1,48 @@
+
 package model;
 
 import java.util.Date;
 
 /**
-* @author Lucca Leonardo
-*/
-
+ *
+ * @author Gabriel Nicolau
+ */
 public class Venda {
-     private int id;
 
-    private Date dataVenda;
-
+    private int idVenda;
+    private int idProduto;
     private int idCliente;
+    private Date dataCompra;
+    private int quantidadeComprada;
 
-    private double valorTotal;
-
+    // Construtor vazio
     public Venda() {
-        
+
     }
 
-    public int getId() {
-        return id;
+    // Construtor com parametros
+    public Venda(int idVenda, int idProduto, int idCliente, int quantidadeComprada) {
+        this.idVenda = idVenda;
+        this.idProduto = idProduto;
+        this.idCliente = idCliente;
+        this.quantidadeComprada = quantidadeComprada;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // Metodos
+    public int getIdVenda() {
+        return idVenda;
     }
 
-    public Date getDataVenda() {
-        return dataVenda;
+    public void setIdVenda(int idVenda) {
+        this.idVenda = idVenda;
     }
 
-    public void setDataVenda(Date dataVenda) {
-        this.dataVenda = dataVenda;
+    public int getIdProduto() {
+        return idProduto;
+    }
+
+    public void setIdProduto(int idProduto) {
+        this.idProduto = idProduto;
     }
 
     public int getIdCliente() {
@@ -43,11 +53,20 @@ public class Venda {
         this.idCliente = idCliente;
     }
 
-    public double getValorTotal() {
-        return valorTotal;
+    public Date getDataCompra() {
+        return dataCompra;
     }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
     }
+
+    public int getQuantidadeComprada() {
+        return quantidadeComprada;
+    }
+
+    public void setQuantidadeComprada(int quantidadeComprada) {
+        this.quantidadeComprada = quantidadeComprada;
+    }
+
 }

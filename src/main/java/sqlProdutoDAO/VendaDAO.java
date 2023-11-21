@@ -62,4 +62,39 @@ public class VendaDAO {
 
         return lista;
     }
+
+    // Buscar nome do cliente por CPF
+    public static String buscarNomePorCPF(String cpf) {
+        Connection conexao = null;
+        PreparedStatement comandoSQL = null;
+        ResultSet rs = null;
+        String nome = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conexao = DriverManager.getConnection(url, login, senha);
+            comandoSQL = conexao.prepareStatement("SELECT nome FROM Cliente WHERE cpf = ?");
+            comandoSQL.setString(1, cpf);
+            rs = comandoSQL.executeQuery();
+
+            if (rs.next()) {
+                nome = rs.getString("nome");
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+            // Trate melhor essa exceção na sua aplicação
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    // Trate melhor essa exceção na sua aplicação
+                }
+            }
+        }
+
+        return nome;
+    }
+
 }

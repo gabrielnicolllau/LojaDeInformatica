@@ -28,17 +28,12 @@ CREATE TABLE Cliente (
     uf CHAR(2) NOT NULL
 );
 
--- a coluna ID_cliente na tabela Compra está referenciando o campo id_cliente na tabela cliente, estabelecendo um relacionamento entre essas tabelas. --
-CREATE TABLE Compra (
-    id_Compra INT AUTO_INCREMENT PRIMARY KEY,
-    id_Cliente INT NOT NULL,
-    cpf VARCHAR(14) NOT NULL,
-    id_Produto INT NOT NULL,
-    quantidade INT NOT NULL,
-    dataCompra TIMESTAMP,
-    FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente),
-    FOREIGN KEY (id_Produto) REFERENCES Produto(id_Produto)
+CREATE TABLE Venda (
+    id_Venda INT AUTO_INCREMENT PRIMARY KEY,
+    id_Produto INT,
+    id_Cliente INT,
+    dataCompra TIMESTAMP NOT NULL,
+    quantidadeComprada INT NOT NULL,
+    FOREIGN KEY (id_Produto) REFERENCES Produto(id_Produto),
+    FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente)
 );
-
-ALTER TABLE Compra
-ADD preco INT NOT NULL;

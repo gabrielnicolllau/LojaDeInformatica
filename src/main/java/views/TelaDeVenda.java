@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.VendaProduto;
 import sqlProdutoDAO.VendaDAO;
 
 public class TelaDeVenda extends javax.swing.JFrame {
-
-    private ArrayList<Produto> listaProdutos; // Mantenha uma lista de VendaItem
 
     public TelaDeVenda() {
         initComponents();
@@ -165,6 +162,11 @@ public class TelaDeVenda extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCPFFocusLost(evt);
+            }
+        });
         txtCPF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCPFActionPerformed(evt);
@@ -294,15 +296,6 @@ public class TelaDeVenda extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
-    // Metodo para adicionar no carrinho
-    // private void adicionarVendaAoCarrinho(Produto produto) {
-    //  // Altere para adicionar um VendaItem na lista
-    //  VendaProduto item = new VendaProduto(produto.getIdProduto(), produto.getTipoDaPeca(), produto.getDescricao(), produto.getQuantidade(), produto.getPreco());
-    //  itensVenda.add(item);
-    //   DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
-    //  modelo.addRow(new Object[]{item.getIdProduto(), item.getTipoDaPeca(), item.getDescricao(), item.getQuantidade(), item.getPreco()});
-    // }
-
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
 
         String tipoSelecionado = cboCategoria.getSelectedItem().toString();
@@ -310,15 +303,31 @@ public class TelaDeVenda extends javax.swing.JFrame {
         int quantidade = (int) opcQuantidade.getValue();
         double preco = 0; // Defina o preço conforme necessário
 
-        if (tipoSelecionado.equals("Selecione um Tipo...")) {
-            JOptionPane.showMessageDialog(rootPane, "Selecione um tipo antes de adicionar um produto.");
-
+        if (tipoSelecionado.equals("Selecione uma CATEGORIA...") || quantidade <= 0) {
+            JOptionPane.showMessageDialog(rootPane, "Selecione um tipo e uma quantidade válida antes de adicionar o produto.");
         } else {
+            ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(tipoSelecionado); // Substitua DAO pelo nome correto da sua classe DAO
 
-            if (quantidade > 0) {
-                VendaProduto novoProduto = new VendaProduto(tipoSelecionado, descricaoProduto, preco, quantidade);
-                adicionarVendaAoCarrinho(novoProduto);
+            Produto produtoSelecionado = null;
+
+            for (Produto produto : produtos) {
+                if (produto.getDescricao().equals(descricaoProduto)) {
+                    produtoSelecionado = produto;
+                    break;
+                }
             }
+
+            if (produtoSelecionado != null) {
+                if (quantidade <= produtoSelecionado.getQuantidade()) {
+                    // Adicionar ao carrinho
+                    // Atualizar a quantidade disponível no estoque após adicionar ao carrinho
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Quantidade indisponível no estoque!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
+            }
+
         }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
@@ -334,51 +343,22 @@ public class TelaDeVenda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnDetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalhesActionPerformed
-
-        // Exibir os detalhes a partir da ta
-        int linhaSelecionada = tblcarrinho.getSelectedRow();
-        if (linhaSelecionada >= 0) {
-
-            String exibirId = tblcarrinho.getValueAt(linhaSelecionada, 0).toString();
-
-            String exibirProduto = tblcarrinho.getValueAt(linhaSelecionada, 1).toString();
-
-            String exibirQuantidade = tblcarrinho.getValueAt(linhaSelecionada, 2).toString();
-
-            String exibirPreco = tblcarrinho.getValueAt(linhaSelecionada, 3).toString();
-
-            JOptionPane.showMessageDialog(rootPane, "Id do produto " + exibirId + "\n"
-                    + "Produto: " + exibirProduto + "\n"
-                    + "Quantidade: " + exibirQuantidade + "\n"
-                    + "Preco: " + exibirPreco + "\n");
-        }
-
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnDetalhesActionPerformed
 
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
 
-        // Obtem a categoria selecionada no combobox
         String categoriaSelecionada = cboCategoria.getSelectedItem().toString();
 
-        // Verifica se a categoria selecionada nao e a padrão
         if (!categoriaSelecionada.equals("Selecione uma CATEGORIA...")) {
-
-            // Obtem uma lista de produtos associados a categoria selecionada
             ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(categoriaSelecionada);
 
-            // Mapeia os produtos para seus nomes (descrições) e os coloca em um array de strings
             String[] nomesProdutos = produtos.stream().map(Produto::getDescricao).toArray(String[]::new);
 
-            // Define o modelo do combobox de produtos com os nomes dos produtos
             cboProdutos.setModel(new DefaultComboBoxModel<>(nomesProdutos));
-
-            // Habilita o combobox
             cboProdutos.setEnabled(true);
-
         } else {
             cboProdutos.setEnabled(false);
-
-            // Define um modelo vazio para o combobox de produtos
             cboProdutos.setModel(new DefaultComboBoxModel<>(new String[]{}));
         }
     }//GEN-LAST:event_cboCategoriaActionPerformed
@@ -394,16 +374,20 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
     private void txtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCPFActionPerformed
         // TODO add your handling code here:
+
+
     }//GEN-LAST:event_txtCPFActionPerformed
 
-    // METODOS
-    // Metodo para adicionar no carrinho
-    private void adicionarVendaAoCarrinho(VendaProduto produtoVenda) {
+    private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
+        // TODO add your handling code here:
+        String cpf = txtCPF.getText();
 
-        DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
-        modelo.addRow(new Object[]{produtoVenda.getTipo(), produtoVenda.getDescricao(), produtoVenda.getQuantidade(), produtoVenda.getPreco()});
+        // Chama o método para buscar o nome do cliente com base no CPF
+        String nomeCliente = VendaDAO.buscarNomePorCPF(cpf);
 
-    }
+        // Atualiza o label com o nome retornado
+        lblNome.setText(nomeCliente != null ? nomeCliente : "Cliente não encontrado");
+    }//GEN-LAST:event_txtCPFFocusLost
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
