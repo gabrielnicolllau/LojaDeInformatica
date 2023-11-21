@@ -4,6 +4,7 @@ import model.Produto;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import sqlProdutoDAO.VendaDAO;
 
@@ -48,7 +49,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblcarrinho = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblValorTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -257,9 +258,10 @@ public class TelaDeVenda extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblcarrinho);
 
-        jLabel1.setText("Valor Total: ");
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setText("Valor Total R$");
 
-        jLabel2.setText("R$ ");
+        lblValorTotal.setText("Valor Total");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -268,12 +270,12 @@ public class TelaDeVenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(46, 46, 46)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -284,13 +286,21 @@ public class TelaDeVenda extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private double calcularValorTotal(JTable tabela) {
+        double total = 0;
+        for (int i = 0; i < tabela.getRowCount(); i++) {
+            total += (double) tabela.getValueAt(i, 3); // Considerando que a coluna 3 é o valor total por item na tabela
+        }
+        return total;
+    }
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
@@ -301,12 +311,11 @@ public class TelaDeVenda extends javax.swing.JFrame {
         String tipoSelecionado = cboCategoria.getSelectedItem().toString();
         String descricaoProduto = cboProdutos.getSelectedItem().toString();
         int quantidade = (int) opcQuantidade.getValue();
-        double preco = 0; // Defina o preço conforme necessário
 
-        if (tipoSelecionado.equals("Selecione uma CATEGORIA...") || quantidade <= 0) {
+        if (tipoSelecionado.equals("Selecione uma Categoria...") || quantidade <= 0) {
             JOptionPane.showMessageDialog(rootPane, "Selecione um tipo e uma quantidade válida antes de adicionar o produto.");
         } else {
-            ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(tipoSelecionado); // Substitua DAO pelo nome correto da sua classe DAO
+            ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(tipoSelecionado);
 
             Produto produtoSelecionado = null;
 
@@ -319,15 +328,25 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
             if (produtoSelecionado != null) {
                 if (quantidade <= produtoSelecionado.getQuantidade()) {
-                    // Adicionar ao carrinho
-                    // Atualizar a quantidade disponível no estoque após adicionar ao carrinho
+                    double valorUnitario = produtoSelecionado.getPreco();
+                    double valorTotalItem = valorUnitario * quantidade;
+
+                    DefaultTableModel model = (DefaultTableModel) tblcarrinho.getModel();
+                    model.addRow(new Object[]{
+                        produtoSelecionado.getTipoDaPeca(), produtoSelecionado.getDescricao(),
+                        quantidade,
+                        valorUnitario,
+                        valorTotalItem
+                    });
+
+                    double valorTotal = calcularValorTotal(tblcarrinho);
+                    lblValorTotal.setText(String.format("R$ %.2f", valorTotal));
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Quantidade indisponível no estoque!");
                 }
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
             }
-
         }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
@@ -433,7 +452,6 @@ public class TelaDeVenda extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboCategoria;
     private javax.swing.JComboBox<String> cboProdutos;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -444,6 +462,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblValorTotal;
     private javax.swing.JSpinner opcQuantidade;
     private javax.swing.JTable tblcarrinho;
     private javax.swing.JFormattedTextField txtCPF;
