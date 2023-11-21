@@ -2,25 +2,15 @@ package views;
 
 import model.Produto;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.VendaItem;
+import model.VendaProduto;
+import sqlProdutoDAO.VendaDAO;
 
 public class TelaDeVenda extends javax.swing.JFrame {
 
-    private int produtoId; // Variável para armazenar o ID do Produtos
-
-    // Crie listas para armazenar produtos por categoria
-    private List<String> processadores = new ArrayList<>();
-    private List<String> placasMae = new ArrayList<>();
-    private List<String> memoriaRam = new ArrayList<>();
-    private List<String> hDD = new ArrayList<>();
-    private List<String> fonte = new ArrayList<>();
-    private List<String> gabinete = new ArrayList<>();
-
-    private List<VendaItem> vendas = new ArrayList<>(); // Lista de vendas de produtos
+    private ArrayList<Produto> listaProdutos; // Mantenha uma lista de VendaItem
 
     public TelaDeVenda() {
         initComponents();
@@ -32,35 +22,6 @@ public class TelaDeVenda extends javax.swing.JFrame {
         // Desative o cboProdutos inicialmente
         cboProdutos.setEnabled(false);
 
-        // Preencha as listas de produtos por categoria
-        processadores.add("Intel Core i9-11900K");
-        processadores.add("Intel Core i5-11600K");
-        processadores.add("AMD Ryzen 9 5900X (AMD): 12 núcleos");
-        processadores.add("AMD Ryzen 5 5600X (AMD): 6 núcleos");
-
-        placasMae.add("Placa-mãe Intel Z590");
-        placasMae.add("Placa-mãe Intel B560");
-        placasMae.add("Placa-mãe AMD X570");
-        placasMae.add("Placa-mãe AMD B450");
-
-        memoriaRam.add("Corsair Vengeance LPX DDR4 (1x8)");
-        memoriaRam.add("G.Skill Ripjaws V Series DDR4 (1x8)");
-        memoriaRam.add("Crucial Ballistix DDR4 (1x8)");
-        memoriaRam.add("Kingston HyperX Fury DDR4 (1x8)");
-
-        hDD.add("1 TB HDD");
-        hDD.add("256 SSD");
-        hDD.add("512 SSD");
-        hDD.add("1 TB SSD");
-        hDD.add("256 SSD NvMe");
-
-        fonte.add("Corsair RM750x (750W) - Fonte de Alimentação Modular 80 PLUS Gold");
-        fonte.add("EVGA SuperNOVA 850 P2 (850W) - Fonte de Alimentação Modular 80 PLUS Platinum");
-        fonte.add("Seasonic Focus SGX-650 (650W) - Fonte de Alimentação 80 PLUS Gold SFX-L");
-
-        gabinete.add("NZXT H510 Elite");
-        gabinete.add("Corsair iCUE 4000X RGB");
-        gabinete.add("Cooler Master MasterCase H500M");
     }
 
     @SuppressWarnings("unchecked")
@@ -78,12 +39,15 @@ public class TelaDeVenda extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         opcQuantidade = new javax.swing.JSpinner();
         jPanel3 = new javax.swing.JPanel();
-        btnAdicionar = new javax.swing.JButton();
+        btnAdicionarCarrinho = new javax.swing.JButton();
         btnDetalhes = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        txtCPF = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        lblNome = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblcarrinho = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -94,7 +58,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel3.setText("Categoria:");
+        jLabel3.setText("Tipo:");
 
         cboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione uma CATEGORIA...", "Processador", "Placa-Mãe", "Memórias-RAM", "HDD", "Fonte", "Gabinete" }));
         cboCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -104,7 +68,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel4.setText("Produto:");
+        jLabel4.setText("Produto/Descrição:");
 
         cboProdutos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboProdutos.setEnabled(false);
@@ -121,11 +85,11 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btnAdicionar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnAdicionar.setText("Adicionar no Carrinho");
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionarCarrinho.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAdicionarCarrinho.setText("Adicionar no Carrinho");
+        btnAdicionarCarrinho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarActionPerformed(evt);
+                btnAdicionarCarrinhoActionPerformed(evt);
             }
         });
 
@@ -167,7 +131,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnAdicionar)
+                .addComponent(btnAdicionarCarrinho)
                 .addGap(18, 18, 18)
                 .addComponent(btnDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -183,7 +147,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdicionarCarrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,46 +160,71 @@ public class TelaDeVenda extends javax.swing.JFrame {
         jLabel6.setText("TELA DE VENDAS");
         jLabel6.setToolTipText("");
 
+        try {
+            txtCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCPF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCPFActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel7.setText("CPF:");
+
+        lblNome.setText("Nome");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(173, 173, 173)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5))
-                .addGap(58, 58, 58)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cboCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboProdutos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(opcQuantidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cboCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboProdutos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(opcQuantidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCPF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(167, 167, 167))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                    .addComponent(txtCPF)
+                    .addComponent(jLabel7))
+                .addGap(21, 21, 21)
+                .addComponent(lblNome)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cboCategoria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cboProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(45, 45, 45)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(opcQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(126, 126, 126)
+                .addGap(58, 58, 58)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -246,15 +235,22 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Produto", "Quantidade", "Preço"
+                "Tipo", "Descrição", "Quantidade", "Preço"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(tblcarrinho);
@@ -283,7 +279,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,41 +291,36 @@ public class TelaDeVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     // Metodo para adicionar no carrinho
-    private void adicionarVendaAoCarrinho(Produto produto) {
-        DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
-        modelo.addRow(new Object[]{produto.getIdProduto(), produto.getTipoDaPeca(), produto.getQuantidade(), produto.getPreco()});
-    }
+    // private void adicionarVendaAoCarrinho(Produto produto) {
+    //  // Altere para adicionar um VendaItem na lista
+    //  VendaProduto item = new VendaProduto(produto.getIdProduto(), produto.getTipoDaPeca(), produto.getDescricao(), produto.getQuantidade(), produto.getPreco());
+    //  itensVenda.add(item);
+    //   DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
+    //  modelo.addRow(new Object[]{item.getIdProduto(), item.getTipoDaPeca(), item.getDescricao(), item.getQuantidade(), item.getPreco()});
+    // }
 
-    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        String categoriaSelecionada = cboCategoria.getSelectedItem().toString();
+    private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
 
-        if (categoriaSelecionada.equals("Selecione uma Categoria...")) {
-            JOptionPane.showMessageDialog(rootPane, "Selecione uma categoria antes de adicionar um produto.");
+        String tipoSelecionado = cboCategoria.getSelectedItem().toString();
+        String descricaoProduto = cboProdutos.getSelectedItem().toString();
+        int quantidade = (int) opcQuantidade.getValue();
+        double preco = 0; // Defina o preço conforme necessário
+
+        if (tipoSelecionado.equals("Selecione um Tipo...")) {
+            JOptionPane.showMessageDialog(rootPane, "Selecione um tipo antes de adicionar um produto.");
+
         } else {
-            String nomeProdutoSelecionado = cboProdutos.getSelectedItem().toString(); // Obtenha o nome do Produtos selecionado
-            int quantidade = (int) opcQuantidade.getValue(); // Obtenha a quantidade
 
-            // Verifique se a quantidade é maior que zero
             if (quantidade > 0) {
-                // Aqui você precisa criar um objeto Produtos com base no nome do Produtos
-                Produto novoProduto = new Produto();
-
-                novoProduto.getIdProduto();
-                novoProduto.setTipoDaPeca(nomeProdutoSelecionado);
-                novoProduto.setQuantidade(quantidade);
-                System.out.println(novoProduto.getIdProduto());
-
+                VendaProduto novoProduto = new VendaProduto(tipoSelecionado, descricaoProduto, preco, quantidade);
                 adicionarVendaAoCarrinho(novoProduto);
-                opcQuantidade.setValue(0); // Redefina o JSpinner para 0
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "A quantidade deve ser maior que zero.");
             }
         }
-    }//GEN-LAST:event_btnAdicionarActionPerformed
+    }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         int indiceLinha = tblcarrinho.getSelectedRow();
@@ -366,26 +357,29 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
 
+        // Obtem a categoria selecionada no combobox
         String categoriaSelecionada = cboCategoria.getSelectedItem().toString();
 
-        if (!categoriaSelecionada.equals("Selecione uma Categoria...")) {
+        // Verifica se a categoria selecionada nao e a padrão
+        if (!categoriaSelecionada.equals("Selecione uma CATEGORIA...")) {
+
+            // Obtem uma lista de produtos associados a categoria selecionada
+            ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(categoriaSelecionada);
+
+            // Mapeia os produtos para seus nomes (descrições) e os coloca em um array de strings
+            String[] nomesProdutos = produtos.stream().map(Produto::getDescricao).toArray(String[]::new);
+
+            // Define o modelo do combobox de produtos com os nomes dos produtos
+            cboProdutos.setModel(new DefaultComboBoxModel<>(nomesProdutos));
+
+            // Habilita o combobox
             cboProdutos.setEnabled(true);
-            if (categoriaSelecionada.equals("Processador")) {
-                cboProdutos.setModel(new DefaultComboBoxModel<>(processadores.toArray(new String[0])));
-            } else if (categoriaSelecionada.equals("Placa-Mãe")) {
-                cboProdutos.setModel(new DefaultComboBoxModel<>(placasMae.toArray(new String[0])));
-            } else if (categoriaSelecionada.equals("Memoria Ram")) { // Correção no nome da categoria
-                cboProdutos.setModel(new DefaultComboBoxModel<>(memoriaRam.toArray(new String[0])));
-            } else if (categoriaSelecionada.equals("HDD")) {
-                cboProdutos.setModel(new DefaultComboBoxModel<>(hDD.toArray(new String[0])));
-            } else if (categoriaSelecionada.equals("Fonte")) {
-                cboProdutos.setModel(new DefaultComboBoxModel<>(fonte.toArray(new String[0])));
-            } else if (categoriaSelecionada.equals("Gabinete")) {
-                cboProdutos.setModel(new DefaultComboBoxModel<>(gabinete.toArray(new String[0])));
-            } else {
-                cboProdutos.setEnabled(false);
-                cboProdutos.setModel(new DefaultComboBoxModel<>());
-            }
+
+        } else {
+            cboProdutos.setEnabled(false);
+
+            // Define um modelo vazio para o combobox de produtos
+            cboProdutos.setModel(new DefaultComboBoxModel<>(new String[]{}));
         }
     }//GEN-LAST:event_cboCategoriaActionPerformed
 
@@ -397,6 +391,19 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCPFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCPFActionPerformed
+
+    // METODOS
+    // Metodo para adicionar no carrinho
+    private void adicionarVendaAoCarrinho(VendaProduto produtoVenda) {
+
+        DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
+        modelo.addRow(new Object[]{produtoVenda.getTipo(), produtoVenda.getDescricao(), produtoVenda.getQuantidade(), produtoVenda.getPreco()});
+
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -434,7 +441,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgSO;
     private javax.swing.ButtonGroup bgTipoComputador;
-    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnAdicionarCarrinho;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnDetalhes;
@@ -447,11 +454,14 @@ public class TelaDeVenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JLabel lblNome;
     private javax.swing.JSpinner opcQuantidade;
     private javax.swing.JTable tblcarrinho;
+    private javax.swing.JFormattedTextField txtCPF;
     // End of variables declaration//GEN-END:variables
 }

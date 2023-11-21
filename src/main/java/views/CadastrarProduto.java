@@ -1,4 +1,3 @@
-
 package views;
 
 import model.Produto;
@@ -194,10 +193,10 @@ public class CadastrarProduto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-// Esse de inclusao, produto ainda nao existe
+        // Esse de inclusao, produto ainda nao existe
         if (obj == null) {
 
-            // Resgatar dados da interface and passar para o objeto "novoProduto"
+            // Resgatar dados da interface e passar para o objeto "novoProduto"
             String tipo = cboTipos.getSelectedItem().toString();
             double preco = 0;
             int quantidade = 0;

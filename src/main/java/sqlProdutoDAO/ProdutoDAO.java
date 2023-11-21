@@ -1,4 +1,3 @@
-
 package sqlProdutoDAO;
 
 import java.sql.Connection;
@@ -34,7 +33,7 @@ public class ProdutoDAO {
             conexao = DriverManager.getConnection(url, login, senha);
 
             //Passo 3: Preparar os comandos SQL a ser executado
-            comandoSQL = conexao.prepareStatement("INSERT INTO produto (Tipo, Preco, Quantidade, Descricao) VALUES(?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            comandoSQL = conexao.prepareStatement("INSERT INTO Produto (tipo, preco, quantidade, descricao) VALUES(?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Pegando as informacoes do objeto para mandar para o banco
             comandoSQL.setString(1, novoProduto.getTipoDaPeca());
@@ -112,11 +111,11 @@ public class ProdutoDAO {
 
                     Produto item = new Produto();
 
-                    item.setIdProduto(rs.getInt("ID_produto"));
-                    item.setTipoDaPeca(rs.getString("Tipo"));
-                    item.setPreco(rs.getDouble("Preco"));
-                    item.setQuantidade(rs.getInt("Quantidade"));
-                    item.setDescricao(rs.getString("Descricao"));
+                    item.setIdProduto(rs.getInt("id_Produto"));
+                    item.setTipoDaPeca(rs.getString("tipo"));
+                    item.setPreco(rs.getDouble("preco"));
+                    item.setQuantidade(rs.getInt("quantidade"));
+                    item.setDescricao(rs.getString("descricao"));
 
                     lista.add(item);
                 }
@@ -160,7 +159,7 @@ public class ProdutoDAO {
             conexao = DriverManager.getConnection(url, login, senha);
 
             //Passo 3: Preparar os comandos SQL a ser executado
-            comandoSQL = conexao.prepareStatement("SELECT * FROM produto WHERE ID_produto = ?");
+            comandoSQL = conexao.prepareStatement("SELECT * FROM Produto WHERE id_Produto = ?");
             comandoSQL.setString(1, produtoBuscado);
 
             // Passo 4: Executar o comando SQL
@@ -172,11 +171,11 @@ public class ProdutoDAO {
 
                     Produto item = new Produto();
 
-                    item.setIdProduto(rs.getInt("ID_produto"));
-                    item.setTipoDaPeca(rs.getString("Tipo"));
-                    item.setPreco(rs.getDouble("Preco"));
-                    item.setQuantidade(rs.getInt("Quantidade"));
-                    item.setDescricao(rs.getString("Descricao"));
+                    item.setIdProduto(rs.getInt("id_Produto"));
+                    item.setTipoDaPeca(rs.getString("tipo"));
+                    item.setPreco(rs.getDouble("preco"));
+                    item.setQuantidade(rs.getInt("quantidade"));
+                    item.setDescricao(rs.getString("descricao"));
 
                     lista.add(item);
                 }
@@ -216,7 +215,7 @@ public class ProdutoDAO {
             conexao = DriverManager.getConnection(url, login, senha);
 
             // Passo 3: Preparar os comandos SQL a ser executado
-            comandoSQL = conexao.prepareStatement("DELETE FROM produto WHERE ID_produto = ?");
+            comandoSQL = conexao.prepareStatement("DELETE FROM Produto WHERE id_Produto = ?");
 
             // Pegando o ID
             comandoSQL.setInt(1, idProduto);
@@ -253,7 +252,7 @@ public class ProdutoDAO {
             conexao = DriverManager.getConnection(url, login, senha);
 
             //Passo 3: Preparar os comandos SQL a ser executado
-            comandoSQL = conexao.prepareStatement("UPDATE produto SET Tipo = ?, Preco = ?, Quantidade = ?, Descricao = ? WHERE ID_produto = ?");
+            comandoSQL = conexao.prepareStatement("UPDATE Produto SET tipo = ?, preco = ?, quantidade = ?, descricao = ? WHERE id_Produto = ?");
 
             //Pegando as informacoes do objeto para mandar para o banco
             comandoSQL.setString(1, ProdutoAlterar.getTipoDaPeca());
