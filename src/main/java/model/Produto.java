@@ -20,7 +20,9 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    //Sobrecarga para alterar posteriomente
+    /* Para pegar do banco de dados, puxar o id criado no banco. 
+       Sobrecarga para alterar posteriomente.
+     */
     public Produto(int idProduto, String tipoDaPeca, double preco, int quantidade, String descricao) {
         this.idProduto = idProduto;
         this.tipoDaPeca = tipoDaPeca;

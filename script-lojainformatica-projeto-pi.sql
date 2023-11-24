@@ -37,3 +37,12 @@ CREATE TABLE Venda (
     FOREIGN KEY (id_Produto) REFERENCES Produto(id_Produto),
     FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente)
 );
+
+CREATE TABLE Usuario (
+	id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR (50) NOT NULL,
+    usuario VARCHAR (20) NOT NULL,
+    senha VARCHAR(20) NOT NULL,
+    cargo VARCHAR(20) NOT NULL
+);
+

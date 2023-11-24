@@ -211,12 +211,11 @@ public class CadastrarProduto extends javax.swing.JDialog {
             }
 
             if (tipo.equals("Selecione o Tipo...") || preco <= 0 || quantidade <= 0 || descricao.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios.");
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
             } else {
                 // Passando os dados coletados da tela "CadastrarProduto" para o objeto "novoProduto"
                 Produto novoProduto = new Produto(tipo, preco, quantidade, descricao);
 
-                // Call your save method here
                 if (ProdutoDAO.salvar(novoProduto)) {
                     JOptionPane.showMessageDialog(null, "Salvo!");
                 } else {
