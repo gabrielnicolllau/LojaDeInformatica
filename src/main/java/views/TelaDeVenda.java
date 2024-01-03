@@ -1,12 +1,17 @@
 package views;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import model.Produto;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import sqlProdutoDAO.VendaDAO;
+import model.Cliente;
+import model.Venda;
+import sqlDAO.VendaDAO;
 
 public class TelaDeVenda extends javax.swing.JFrame {
 
@@ -83,6 +88,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnAdicionarCarrinho.setBackground(new java.awt.Color(204, 204, 204));
         btnAdicionarCarrinho.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAdicionarCarrinho.setText("Adicionar no Carrinho");
         btnAdicionarCarrinho.addActionListener(new java.awt.event.ActionListener() {
@@ -91,6 +97,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             }
         });
 
+        btnDetalhes.setBackground(new java.awt.Color(204, 204, 204));
         btnDetalhes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDetalhes.setText("Detalhes");
         btnDetalhes.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +106,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             }
         });
 
+        btnConfirmar.setBackground(new java.awt.Color(204, 255, 204));
         btnConfirmar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnConfirmar.setText("Confirmar");
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +115,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
             }
         });
 
+        btnRemover.setBackground(new java.awt.Color(255, 153, 135));
         btnRemover.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRemover.setText("Remover");
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
@@ -131,14 +140,14 @@ public class TelaDeVenda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnAdicionarCarrinho)
                 .addGap(18, 18, 18)
-                .addComponent(btnDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
                 .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnDetalhes, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(56, 56, 56))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,7 +192,6 @@ public class TelaDeVenda extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -203,6 +211,7 @@ public class TelaDeVenda extends javax.swing.JFrame {
                     .addComponent(txtCPF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(167, 167, 167))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,14 +247,14 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tipo", "Descrição", "Quantidade", "Preço"
+                "ID do produto", "Tipo", "Descrição", "Valor Unitário", "Quantidade", "Preço"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -270,12 +279,13 @@ public class TelaDeVenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 471, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -294,62 +304,198 @@ public class TelaDeVenda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // METODOS
+    /*
+     * Esse metodo vai percorrer a tabela na coluna 4 que é o preço
+     * e vai somar seus valores.
+     */
+    //Jtable é a propriedade da tabela
+    /**
+     * Calcula o valor total dos itens na tabela.
+     *
+     * @param tabela a tabela onde os itens estão listados, Jtable é a
+     * propriedade da tabela.
+     * @return o valor total dos itens na tabela
+     */
     private double calcularValorTotal(JTable tabela) {
         double total = 0;
         for (int i = 0; i < tabela.getRowCount(); i++) {
-            total += (double) tabela.getValueAt(i, 3); // Considerando que a coluna 3 é o valor total por item na tabela
+            total += (double) tabela.getValueAt(i, 5);
         }
         return total;
     }
 
+    /**
+     * Verifica se o produto já está no carrinho.
+     *
+     * @author Gabriel Nicolau
+     * @param tblCarrinho a tabela onde os produtos estão listados
+     * @param idProduto o ID do produto a ser verificado
+     * @return true se o produto estiver no carrinho, caso contrário, retorna
+     * false
+     */
+    private boolean produtoJaNoCarrinho(JTable tblCarrinho, int idProduto) {
+        int contarLinhas = tblCarrinho.getRowCount();
+        boolean produtoJaAdicionado = false;
+
+        for (int i = 0; i < contarLinhas; i++) {
+            int id = (int) tblCarrinho.getValueAt(i, 0); // Supondo que o ID do produto esteja na primeira coluna
+
+            if (id == idProduto) {
+                produtoJaAdicionado = true;
+                break;
+            }
+        }
+
+        return produtoJaAdicionado;
+    }
+
+    /**
+     * Confirma a compra dos itens presentes no carrinho quando o botão
+     * correspondente é pressionado na interface. Vai ser pego as informações
+     * dos devidos campos.
+     *
+     * @param evt o evento de ação associado ao botão
+     * @author Gabriel Nicolau
+     */
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // TODO add your handling code here:
+
+        DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
+        ArrayList<Venda> vendas = new ArrayList<>(); // Criando lista de venda 
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            int idProduto = (int) modelo.getValueAt(i, 0); // Obtém o ID do produto da primeira coluna
+            String cpf = txtCPF.getText(); // Pegando o CPF da janela
+            Cliente cliente = VendaDAO.buscarNomePorCPF(cpf); // Buscar o cpf no banco
+
+            // Se o cliente for vazio
+            if (cliente != null) {
+
+                int idCliente = cliente.getIdCliente(); // Pega i id dele
+                LocalDate dataAtual = LocalDate.now(); // Data da compra
+                Date dataCompraUtil = Date.from(dataAtual.atStartOfDay(ZoneId.systemDefault()).toInstant()); // Converter um LocalDate em um Date
+                java.sql.Date dataCompraSQL = new java.sql.Date(dataCompraUtil.getTime()); // Para guardar no banco
+
+                // Pega a quantidade na tabela do Java e o valor
+                int quantidade = Integer.parseInt(modelo.getValueAt(i, 4).toString());
+                double valorTotal = Double.parseDouble(modelo.getValueAt(i, 5).toString());
+
+                // Guarda as informações na Classe Venda
+                Venda novaVenda = new Venda(idProduto, idCliente, dataCompraSQL, quantidade, valorTotal);
+                vendas.add(novaVenda); // Adiciona na lista de Venda
+            } else {
+                JOptionPane.showMessageDialog(null, "Cliente não encontrado.");
+            }
+        }
+
+        // Salvar a lista no de produtos comprados no banco
+        for (Venda produtosDaLista : vendas) {
+            boolean inserido = VendaDAO.salvar(produtosDaLista);
+
+            if (!inserido) {
+                JOptionPane.showMessageDialog(null, "Erro ao salvar a venda no banco de dados.");
+            } else {
+                boolean atualizacaoEstoque = VendaDAO.decrementarQuantidadeEstoque(produtosDaLista.getIdProduto(), produtosDaLista.getQuantidadeComprada());
+                if (!atualizacaoEstoque) {
+                    JOptionPane.showMessageDialog(null, "Erro ao atualizar a quantidade do produto.");
+
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Compra concluída");
+
+        // Reseta a venda
+        modelo.setRowCount(0);
+        lblValorTotal.setText("R$ 0.00");
+        txtCPF.setEditable(true);
+        txtCPF.setFocusable(true);
+
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
+    /**
+     * @author Gabriel Nicolau Adiciona um produto selecionado ao carrinho
+     * quando o botão for acionado
+     * @param evt o evento de ação associado ao botão
+     */
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
 
+        // Pega as primeiras informações da tabela do Java e guarda em variáveis
         String tipoSelecionado = cboCategoria.getSelectedItem().toString();
         String descricaoProduto = cboProdutos.getSelectedItem().toString();
         int quantidade = (int) opcQuantidade.getValue();
 
-        if (tipoSelecionado.equals("Selecione uma Categoria...") || quantidade <= 0) {
+        // Esse if verifica se tipo, descrição e quantidade está preechido, se for true executa o if.
+        if (tipoSelecionado.equals("Selecione uma Categoria...") || quantidade == 0) {
             JOptionPane.showMessageDialog(rootPane, "Selecione um tipo e uma quantidade válida antes de adicionar o produto.");
+
+            // se for falso, executa esse.
         } else {
+            // Vai buscar no banco a lista do produto selecionado
             ArrayList<Produto> produtos = VendaDAO.buscarProdutosPorCategoria(tipoSelecionado);
+            Produto produtoSelecionado = null; // Nenhum produto selecionado ainda.
 
-            Produto produtoSelecionado = null;
-
-            for (Produto produto : produtos) {
-                if (produto.getDescricao().equals(descricaoProduto)) {
-                    produtoSelecionado = produto;
+            /*
+             * Percorrendo uma lista de produtos (produtos).
+             * Verifica se a descrição do produto atual é igual à descrição do produto selecionado (descricaoProduto)
+             * que pegamos na variavel anteriormente.
+             */
+            for (Produto item : produtos) {
+                if (item.getDescricao().equals(descricaoProduto)) {
+                    produtoSelecionado = item;
                     break;
                 }
             }
 
+            // Verica se o produto é vazio.
             if (produtoSelecionado != null) {
+
+                // Verifica se a quantidade selecionada pelo usuário está disponível
                 if (quantidade <= produtoSelecionado.getQuantidade()) {
-                    double valorUnitario = produtoSelecionado.getPreco();
-                    double valorTotalItem = valorUnitario * quantidade;
 
-                    DefaultTableModel model = (DefaultTableModel) tblcarrinho.getModel();
-                    model.addRow(new Object[]{
-                        produtoSelecionado.getTipoDaPeca(), produtoSelecionado.getDescricao(),
-                        quantidade,
-                        valorUnitario,
-                        valorTotalItem
-                    });
+                    double valorUnitario = produtoSelecionado.getPreco(); // Pegando o preço do produto selecionado
+                    double valorTotalItem = valorUnitario * quantidade; // Calcula o total com base na quantidade selecionada
 
+                    // Verificar se o produto já carrinho
+                    if (produtoJaNoCarrinho(tblcarrinho, produtoSelecionado.getIdProduto())) {
+                        JOptionPane.showMessageDialog(rootPane, "Este produto já está no carrinho.");
+                    } else {
+
+                        // Passando os produtos para a tabela do Java
+                        DefaultTableModel model = (DefaultTableModel) tblcarrinho.getModel();
+                        model.addRow(new Object[]{
+                            produtoSelecionado.getIdProduto(),
+                            produtoSelecionado.getTipoDaPeca(),
+                            produtoSelecionado.getDescricao(),
+                            produtoSelecionado.getPreco(),
+                            quantidade,
+                            valorTotalItem
+
+                        });
+                    }
+
+                    // Chamadno a funcao para calcular e jogar no label o total da compra
                     double valorTotal = calcularValorTotal(tblcarrinho);
                     lblValorTotal.setText(String.format("R$ %.2f", valorTotal));
+
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "Quantidade indisponível no estoque!");
+                    JOptionPane.showMessageDialog(rootPane, "Quantidade indisponível em estoque. Estoque atual: " + produtoSelecionado.getQuantidade());
+
                 }
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Produto não encontrado!");
             }
         }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
+    /**
+     *
+     * Remove o item selecionado da tabela ao pressionar o botão "Remover".
+     * Verifica se uma linha está selecionada na tabela e remove o item
+     * correspondente.
+     *
+     * @param evt o evento de ação associado ao botão.
+     * @author Gabriel Nicolau
+     */
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         int indiceLinha = tblcarrinho.getSelectedRow();
 
@@ -361,10 +507,39 @@ public class TelaDeVenda extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
+    /**
+     * Ação realizada ao pressionar o botão "Detalhes". Mostra os detalhes dos
+     * itens presentes na tabela. Ele vai percorrer a tabela do java e vai pegar
+     * as informações que tiver na tabela e mostrar na tela no final.
+     *
+     * @param evt evento de clique no botão
+     */
     private void btnDetalhesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalhesActionPerformed
-        // TODO add your handling code here:
+
+        DefaultTableModel modelo = (DefaultTableModel) tblcarrinho.getModel();
+
+        String detalhes = "Resumo das Peças:\n\n";
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            detalhes += "Tipo: " + modelo.getValueAt(i, 1) + "\n";
+            detalhes += "Descrição: " + modelo.getValueAt(i, 2) + "\n";
+            detalhes += "Quantidade: " + modelo.getValueAt(i, 4) + "\n";
+            detalhes += "Valor Unitário: R$ " + modelo.getValueAt(i, 3) + "\n";
+            detalhes += "Preço Total: R$ " + modelo.getValueAt(i, 5) + "\n\n";
+        }
+
+        JOptionPane.showMessageDialog(null, detalhes, "Detalhes das Peças", JOptionPane.PLAIN_MESSAGE);
+
+
     }//GEN-LAST:event_btnDetalhesActionPerformed
 
+    /**
+     * Atualiza a lista de produtos disponíveis de acordo com a categoria
+     * selecionada. Ao escolher uma categoria no menu suspenso, atualiza o menu
+     * suspenso de produtos com base na categoria selecionada.
+     *
+     * @param evt o evento de ação associado ao menu suspenso de categoria.
+     */
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
 
         String categoriaSelecionada = cboCategoria.getSelectedItem().toString();
@@ -397,15 +572,34 @@ public class TelaDeVenda extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtCPFActionPerformed
 
+    /**
+     * Verifica o CPF digitado após a perda de foco do campo de texto. Se
+     * cliente for encotrado ele mostra tela e desativa para preecher outro cpf.
+     * Se não encotrar nada ele retorna que o cliente não foi encontrado
+     *
+     * @param evt o evento de perda de foco associado ao campo de CPF.
+     */
+
     private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
-        // TODO add your handling code here:
         String cpf = txtCPF.getText();
 
-        // Chama o método para buscar o nome do cliente com base no CPF
-        String nomeCliente = VendaDAO.buscarNomePorCPF(cpf);
+        // Verifica se o CPF foi digitado corretamente (com 11 dígitos)
+        if (cpf.length() == 14) {
+            Cliente cliente = VendaDAO.buscarNomePorCPF(cpf);
 
-        // Atualiza o label com o nome retornado
-        lblNome.setText(nomeCliente != null ? nomeCliente : "Cliente não encontrado");
+            if (cliente != null) {
+                lblNome.setText(cliente.getNome());
+
+                // Desativa o campo CPF após encontrar o cliente
+                txtCPF.setEditable(false);
+                txtCPF.setFocusable(false);
+            } else {
+                lblNome.setText("Cliente não encontrado");
+            }
+        } else {
+            lblNome.setText("CPF inválido");
+        }
+
     }//GEN-LAST:event_txtCPFFocusLost
 
     public static void main(String args[]) {

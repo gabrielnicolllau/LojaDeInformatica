@@ -34,15 +34,14 @@ CREATE TABLE Venda (
     id_Cliente INT,
     dataCompra TIMESTAMP NOT NULL,
     quantidadeComprada INT NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (id_Produto) REFERENCES Produto(id_Produto),
     FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente)
 );
 
-CREATE TABLE Usuario (
-	id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR (50) NOT NULL,
-    usuario VARCHAR (20) NOT NULL,
-    senha VARCHAR(20) NOT NULL,
-    cargo VARCHAR(20) NOT NULL
-);
+SELECT * FROM Venda;
+
+ALTER TABLE Cliente
+MODIFY COLUMN cpf VARCHAR(14) UNIQUE;
+
 

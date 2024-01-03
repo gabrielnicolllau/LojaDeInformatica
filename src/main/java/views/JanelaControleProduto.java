@@ -5,20 +5,34 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sqlProdutoDAO.ProdutoDAO;
+import sqlDAO.ProdutoDAO;
 
+/**
+ * A classe JanelaControleProduto representa a interface gráfica para controle
+ * de produtos. Permite a inserção, alteração, exclusão e consulta de produtos,
+ * além de exibir uma tabela com os dados. Utiliza a classe ProdutoDAO para
+ * interagir com o banco de dados.
+ *
+ * @author Gabriel
+ * @see CadastrarProduto
+ * @see ProdutoDAO
+ */
 public class JanelaControleProduto extends javax.swing.JFrame {
-    
+
     List<Produto> listaDeProdutos = new ArrayList<>();
     private DefaultTableModel tableModel;
-    
+
+    /**
+     * Construtor padrão da classe. Inicializa os componentes da interface e
+     * define o modelo da tabela.
+     */
     public JanelaControleProduto() {
-        
+
         initComponents();
         setLocationRelativeTo(null);
         tableModel = (DefaultTableModel) tblProdutos.getModel();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -142,11 +156,18 @@ public class JanelaControleProduto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método acionado ao pressionar o botão "Alterar". Obtém os dados da linha
+     * selecionada na tabela e abre a tela de cadastro de produtos para
+     * alteração.
+     *
+     * @param evt O evento associado ao botão "Alterar".
+     */
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
 
         //1º Passo:  Resgatar a linha e mandar para um objeto
         int linhaSelecionada = tblProdutos.getSelectedRow();
-        
+
         if (linhaSelecionada == -1) {
             JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para atualizar!", "Nenhuma Linha Selecionada", JOptionPane.WARNING_MESSAGE);
             return; // Sai do método se nenhuma linha foi selecionada
@@ -169,21 +190,34 @@ public class JanelaControleProduto extends javax.swing.JFrame {
         CadastrarProduto novaJanela = new CadastrarProduto(alterarProduto);
         novaJanela.setVisible(true);
         novaJanela.setLocationRelativeTo(null);
-        
+
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Inserir". Abre a tela de cadastro
+     * de produtos para inserção de um novo produto.
+     *
+     * @param evt O evento associado ao botão "Inserir".
+     */
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         // criar objeto
         CadastrarProduto novaJanelaInserir = new CadastrarProduto(this, true);
         novaJanelaInserir.setVisible(true);
     }//GEN-LAST:event_btnInserirActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Excluir". Obtém o ID do produto da
+     * linha selecionada na tabela e o exclui utilizando a classe ProdutoDAO.
+     * Atualiza a tabela após a exclusão.
+     *
+     * @param evt O evento associado ao botão "Excluir".
+     */
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
         // 1: Resgatar a linha e mandar para um objeto
         int linhaSelecionada = tblProdutos.getSelectedRow();
-        
+
         if (linhaSelecionada == -1) {
             JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para excluir!", "Nenhuma Linha Selecionada", JOptionPane.WARNING_MESSAGE);
             return; // Sai do método se nenhuma linha foi selecionada
@@ -197,31 +231,38 @@ public class JanelaControleProduto extends javax.swing.JFrame {
 
         //4: Mandar o ID para a DAO excluior
         boolean retorno = ProdutoDAO.excluir(idSelecionado);
-        
+
         if (retorno == true) {
             JOptionPane.showMessageDialog(null, "Computador Excluido");
         } else {
             JOptionPane.showMessageDialog(null, "Nao foi possivel excluir esse computador");
         }
-        
+
         atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Buscar". Realiza uma busca de
+     * produtos com base no texto digitado no campo de filtro. Se nenhum texto
+     * for digitado, recarrega a tabela com todos os produtos.
+     *
+     * @param evt O evento associado ao botão "Buscar".
+     */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
 
         // Buscar se nada for digitado na barra de pesquisa
         if (txtFiltro.getText().trim().toLowerCase().equals("")) {
             recarregarTabela();
-            
+
         } else {
             String itemBuscado = txtFiltro.getText();
 
             //Chamar o metodo na DAO que faz a busa
             ArrayList<Produto> listaRetorno = ProdutoDAO.buscarAlgo(itemBuscado);
-            
+
             DefaultTableModel modelo = (DefaultTableModel) tblProdutos.getModel();
             modelo.setRowCount(0);
-            
+
             for (Produto item : listaRetorno) {
                 //Atualizar a tabela
                 modelo.addRow(new String[]{
@@ -231,15 +272,17 @@ public class JanelaControleProduto extends javax.swing.JFrame {
                     String.valueOf(item.getPreco()),
                     String.valueOf(item.getQuantidade()),
                     String.valueOf(item.getDescricao())
-                
+
                 });
             }
-            
+
         }
 
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    // Metodos
+    /**
+     * Método para atualizar a tabela com dados do banco de dados.
+     */
     public void atualizarTabela() {
         //Chamar a DAO para consultar notas do banco
         ArrayList<Produto> listaRetorno = ProdutoDAO.listar();
@@ -247,7 +290,7 @@ public class JanelaControleProduto extends javax.swing.JFrame {
         //Para cada item na lista, vou adicionar à tabela
         DefaultTableModel modelo = (DefaultTableModel) tblProdutos.getModel();
         modelo.setRowCount(0);
-        
+
         for (Produto item : listaRetorno) {
             modelo.addRow(new String[]{
                 String.valueOf(item.getIdProduto()),
@@ -258,16 +301,19 @@ public class JanelaControleProduto extends javax.swing.JFrame {
                 )}
             );
         }
-        
+
     }
-    
+
+    /**
+     * Método para recarregar a tabela com todos os produtos do banco de dados.
+     */
     public void recarregarTabela() {
-        
+
         ArrayList<Produto> lista = ProdutoDAO.listar();
-        
+
         DefaultTableModel modelo = (DefaultTableModel) tblProdutos.getModel();
         modelo.setRowCount(0);
-        
+
         for (Produto item : lista) {
             modelo.addRow(new String[]{
                 String.valueOf(item.getIdProduto()),
@@ -278,9 +324,14 @@ public class JanelaControleProduto extends javax.swing.JFrame {
             }
             );
         }
-        
+
     }
-    
+
+    /**
+     * Método principal para iniciar a aplicação.
+     *
+     * @param args Os argumentos da linha de comando.
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

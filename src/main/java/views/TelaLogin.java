@@ -3,8 +3,22 @@ package views;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
+/**
+ * A classe TelaLogin representa a interface gráfica para autenticação de
+ * usuários. Permite que os usuários insiram seu login e senha para acessar a
+ * aplicação. Após a autenticação bem-sucedida, redireciona para a
+ * InterfacePrincipal. Utiliza JOptionPane para exibir mensagens de feedback.
+ *
+ * @author Caroline
+ * @author Gabriel
+ * @see InterfacePrincipal
+ */
 public class TelaLogin extends javax.swing.JFrame {
 
+    /**
+     * Construtor padrão da classe. Inicializa os componentes da interface e
+     * centraliza a janela na tela.
+     */
     public TelaLogin() {
         initComponents();
         setLocationRelativeTo(null);
@@ -22,7 +36,6 @@ public class TelaLogin extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         txtSenha = new javax.swing.JPasswordField();
         txtLogin = new javax.swing.JTextField();
-        btnCadastrarUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,13 +85,6 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
 
-        btnCadastrarUser.setText("Cadastrar usuário");
-        btnCadastrarUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarUserActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -93,7 +99,7 @@ public class TelaLogin extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
@@ -101,8 +107,7 @@ public class TelaLogin extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btnCadastrarUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,9 +127,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnCadastrarUser, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -141,14 +144,32 @@ public class TelaLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método acionado ao pressionar o botão "Login". TODO: Adicionar código
+     * para autenticação do usuário.
+     *
+     * @param evt O evento associado ao botão "Login".
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    /**
+     * Método acionado ao pressionar a tecla "Enter" no campo de login. TODO:
+     * Adicionar código para autenticação do usuário.
+     *
+     * @param evt O evento associado à tecla "Enter" no campo de login.
+     */
     private void txtLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLoginActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Cancelar". Fecha a aplicação ao
+     * pressionar o botão "Cancelar".
+     *
+     * @param evt O evento associado ao botão "Cancelar".
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
 
         // Fechar o sistema
@@ -159,11 +180,18 @@ public class TelaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSenhaActionPerformed
 
+    /**
+     * Método acionado ao pressionar a tecla "Enter" no campo de senha. Realiza
+     * a autenticação do usuário ao pressionar "Enter". TODO: Adicionar código
+     * para autenticação do usuário.
+     *
+     * @param evt O evento associado à tecla "Enter" no campo de senha.
+     */
     private void txtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            String usuario = txtLogin.getText();
+            String usuario = txtLogin.getText().toLowerCase().trim();
             String senha = new String(txtSenha.getPassword());
 
             if (usuario.equals("admin") && senha.equals("admin")) {
@@ -187,13 +215,11 @@ public class TelaLogin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtSenhaKeyPressed
 
-    private void btnCadastrarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUserActionPerformed
-
-        JanelaControleUsuario novaJanelaControleUsuario = new JanelaControleUsuario();
-        novaJanelaControleUsuario.setVisible(true);
-        novaJanelaControleUsuario.setLocationRelativeTo(null);
-    }//GEN-LAST:event_btnCadastrarUserActionPerformed
-
+    /**
+     * Método principal para iniciar a aplicação.
+     *
+     * @param args Os argumentos da linha de comando.
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -238,7 +264,6 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrarUser;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;

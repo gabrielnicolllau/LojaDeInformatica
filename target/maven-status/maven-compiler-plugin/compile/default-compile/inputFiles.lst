@@ -1,21 +1,20 @@
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\Compra.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\sqlProdutoDAO\ClienteDAO.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\Produto.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\Venda.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\JanelaDeConsulta.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\TelaRelatorioAnalitico.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\ViewConsultarCliente.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\sqlProdutoDAO\RelatorioSinteticoDAO.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\InterfacePrincipal.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\sqlProdutoDAO\ProdutoDAO.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\RelatorioSintetico.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\controller\Main.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\CadastrarProduto.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\TelaDeVenda.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\RelatorioAnalitico.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\JanelaControleProduto.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\model\Cliente.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\TelaLogin.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\ViewCadastro.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\sqlProdutoDAO\VendaDAO.java
-C:\Users\x397428\Desktop\LojaDeInformatica\src\main\java\views\TelaRelatorioSintetico.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\Cliente.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\ViewCadastro.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\controller\Main.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\Venda.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\VendaItem.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\TelaDeVenda.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\InterfacePrincipal.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\Compra.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\CadastrarProduto.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\sqlDAO\ClienteDAO.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\ViewConsultarCliente.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\RelatorioVenda.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\Produto.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\sqlDAO\ProdutoDAO.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\sqlDAO\RelatorioVendaDAO.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\TelaLogin.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\TelaRelatorioVenda.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\model\VendaProduto.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\sqlDAO\VendaDAO.java
+C:\Users\Lucca\OneDrive - SENAC - SP\Área de Trabalho\aqui\LojaInformatica\src\main\java\views\JanelaControleProduto.java

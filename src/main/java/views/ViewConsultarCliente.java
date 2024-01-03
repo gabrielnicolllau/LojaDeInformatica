@@ -8,17 +8,29 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sqlProdutoDAO.ClienteDAO;
+import sqlDAO.ClienteDAO;
 
 /**
- *
+ * Interface gráfica para consulta de clientes.
+ * Permite inserir, alterar, excluir e visulaizar registros de clientes.
+ * 
  * @author caroline.csaldanha
+ * @see model.Cliente
+ * @see sqlDAO.ClienteDAO
  */
+
+
 public class ViewConsultarCliente extends javax.swing.JFrame {
 
+    /** Lista de clientes carregada do banco de dados. */
     List<Cliente> listaDeClientes = new ArrayList<>();
+    
+    /** tabela que exibe os clientes. */
     private DefaultTableModel tableModel;
-
+    
+    /**
+     * Construtor. Inicializa os componentes da interface.
+     */
     public ViewConsultarCliente() {
 
         initComponents();
@@ -42,8 +54,8 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtConsultar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        txtConsultar = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -75,7 +87,7 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblClientes);
 
-        btnInserir.setBackground(new java.awt.Color(204, 204, 204));
+        btnInserir.setBackground(new java.awt.Color(204, 255, 204));
         btnInserir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -95,7 +107,7 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
             }
         });
 
-        btnExcluir.setBackground(new java.awt.Color(204, 204, 204));
+        btnExcluir.setBackground(new java.awt.Color(255, 153, 135));
         btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -117,6 +129,17 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
             }
         });
 
+        try {
+            txtConsultar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtConsultarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -131,8 +154,8 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar)
                 .addGap(22, 22, 22))
             .addComponent(jScrollPane1)
@@ -145,10 +168,10 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
                         .addGap(16, 16, 16)
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscar)
                             .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -169,27 +192,33 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Abre a interface de cadastro de cliente ao clicar no botão "Inserir".
+ * @param evt - evento de clique associada ao botão inserir.
+ */
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        // criar objeto
         ViewCadastro novaJanela = new ViewCadastro();
         novaJanela.setVisible(true);
         novaJanela.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnInserirActionPerformed
-
+/**
+ * Realiza a ação de alterar um cliente ao clicar no botão "Alterar".
+ * @param evt - evento de clique associada ao botão alterar.
+ */
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        //1º Passo:  Resgatar a linha e mandar para um objeto
+        
+        /**1º Passo:  Resgatar a linha e mandar para um objeto.*/
         int linhaSelecionada = tblClientes.getSelectedRow();
 
         if (linhaSelecionada == -1) {
             JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para atualizar!", "Nenhuma Linha Selecionada", JOptionPane.WARNING_MESSAGE);
-            return; // Sai do método se nenhuma linha foi selecionada
+            return; /**Sai do método se nenhuma linha foi selecionada.*/
         }
 
-        //2º Passo: acessar a camada Model da tabela
+        /**2º Passo: acessar a camada Model da tabela.*/
         DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
 
-        //3º resgatar valores da linha selecionada
+        /**3º resgatar valores da linha selecionada.*/
         int idSelecionado = Integer.parseInt(modelo.getValueAt(linhaSelecionada, 0).toString());
         String nomeSelecionado = modelo.getValueAt(linhaSelecionada, 1).toString();
         String emailSelecionado = modelo.getValueAt(linhaSelecionada, 2).toString();
@@ -205,7 +234,6 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         String cidadeSelecionado = modelo.getValueAt(linhaSelecionada, 13).toString();
         String ufSelecionado = modelo.getValueAt(linhaSelecionada, 14).toString();
 
-        // Tratando o erro da data
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dataNascSelecionada = null;
         try {
@@ -214,33 +242,37 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        //4º Passar dados para o objeto
+        /**4º Passar dados para o objeto*/
         Cliente alterarCliente = new Cliente(idSelecionado, nomeSelecionado, emailSelecionado, cpfSelecionado, dataNascSelecionada, sexoSelecionado,
                 celularSelecionado, telefoneSelecionado, estadoCivilSelecionado, cepSelecionado, enderecoSelecionado,
                 numeroSelecionado, bairroSelecionado, cidadeSelecionado, ufSelecionado);
 
-        //5° Passar dados para a tela de alteracao
+        /**5° Passar dados para a tela de alteracao*/
         ViewCadastro novaJanela = new ViewCadastro(alterarCliente);
         novaJanela.setVisible(true);
         novaJanela.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+/**
+ * Realiza a busca de clientes ao clicar no botão "Buscar".
+ * @param evt - evento de clique associado ao botão "Buscar".
+ */    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // Buscar se nada for digitado na barra de pesquisa
-        if (txtConsultar.getText().trim().toLowerCase().equals("")) {
+        /** Buscar se nada for digitado na barra de pesquisa. */
+        if (txtConsultar.getText().trim().replaceAll("[^0-9]", "").isEmpty()) {
             recarregarTabela();
 
         } else {
-            String dadoBuscado = txtConsultar.getText();
+            String dadoBuscado = txtConsultar.getText().trim();
 
-            //Chamar o metodo na DAO que faz a busca
+            /**Chamar o metodo na DAO que realiza a busca.*/
             ArrayList<Cliente> listaRetorno = ClienteDAO.buscarAlgo(dadoBuscado);
 
             DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
             modelo.setRowCount(0);
 
             for (Cliente dados : listaRetorno) {
-                //Atualizar a tabela
+                /**Atualiza a tabela. */
                 modelo.addRow(new String[]{
                     //Pegar dados do objeto e passar a tabela
                     String.valueOf(dados.getIdCliente()),
@@ -264,22 +296,26 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+/**
+ * Realiza a exclusão de um cliente ao clicar no botão "Excluir".
+ * @param evt - evento de clique associado ao botão "Buscar".
+ */
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // 1: Resgatar a linha e mandar para um objeto
+        /**1: Resgatar a linha e mandar para um objeto.*/
         int linhaSelecionada = tblClientes.getSelectedRow();
 
         if (linhaSelecionada == -1) {
             JOptionPane.showMessageDialog(null, "Por favor, selecione uma linha para excluir!", "Nenhuma Linha Selecionada", JOptionPane.WARNING_MESSAGE);
-            return; // Sai do método se nenhuma linha foi selecionada
+            return; /**Sai do método se nenhuma linha for selecionada.*/
         }
 
-        //2: Acessar a camada Model da tabela
+        /**2: Acessar a camada Model da tabela.*/
         DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
 
-        //3: Resgatar valores da linha selecionada
+        /**3: Resgatar valores da linha selecionada.*/
         int idSelecionado = Integer.parseInt(modelo.getValueAt(linhaSelecionada, 0).toString());
 
-        //4: Mandar o ID para a DAO excluior
+        /**4: Mandar o ID para a DAO excluir.*/
         boolean retorno = ClienteDAO.excluir(idSelecionado);
 
         if (retorno == true) {
@@ -291,12 +327,18 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         atualizarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
-    // Metodos
+    private void txtConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtConsultarActionPerformed
+
+/**
+ * Método para atualizar a tabela ao consultar.
+ */
     public void atualizarTabela() {
-        //Chamar a DAO para consultar notas do banco
+        /**Chamar a DAO para consultar clientes no banco.*/
         ArrayList<Cliente> listaRetorno = ClienteDAO.listar();
 
-        //Para cada item na lista, vou adicionar à tabela
+        /**Cada item da lista será adicionado a tabela.*/
         DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
         modelo.setRowCount(0);
 
@@ -321,10 +363,15 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
         }
     }
 
+/**
+ * Recarrega a tabela com os dados mais recentes.
+ */    
     public void recarregarTabela() {
-
+        
+        /**Chamar a DAO para consultar clientes no banco.*/
         ArrayList<Cliente> lista = ClienteDAO.listar();
-
+        
+        /**Cada item da lista será adicionado a tabela.*/
         DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
         modelo.setRowCount(0);
 
@@ -409,7 +456,7 @@ public class ViewConsultarCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Panel panel1;
     private javax.swing.JTable tblClientes;
-    private javax.swing.JTextField txtConsultar;
+    private javax.swing.JFormattedTextField txtConsultar;
     // End of variables declaration//GEN-END:variables
 
 }

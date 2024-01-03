@@ -2,20 +2,37 @@ package views;
 
 import model.Produto;
 import javax.swing.JOptionPane;
-import sqlProdutoDAO.ProdutoDAO;
+import sqlDAO.ProdutoDAO;
 
+/**
+ * A classe CadastrarProduto representa uma tela de cadastro e alteração de
+ * produtos. Permite ao usuário inserir novos produtos ou editar informações de
+ * produtos existentes.
+ *
+ * @author Gabriel
+ * @see model.Produto
+ * @see sqlDAO.ProdutoDAO
+ */
 public class CadastrarProduto extends javax.swing.JDialog {
 
     Produto obj = null;
 
+    /**
+     * Construtor padrão da classe.
+     *
+     * @param parent O componente pai.
+     * @param modal Indica se a janela deve ser modal.
+     */
     public CadastrarProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
     }
 
-    /* Vamos chamar a tela CadastrarProduto e quando ela aparecer
-     * vai carregar as informacoes do produto selecionado 
+    /**
+     * Construtor que recebe um objeto Produto para edição.
+     *
+     * @param alterarProduto O produto a ser editado.
      */
     public CadastrarProduto(Produto alterarProduto) { // Chamar a tela e passar objeto como parametro para carregar as informacoes dele
         initComponents();
@@ -191,7 +208,13 @@ public class CadastrarProduto extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Método acionado ao pressionar o botão "Salvar". Realiza a inclusão de um
+     * novo produto ou a alteração de um produto existente, dependendo do
+     * contexto.
+     *
+     * @param evt O evento associado ao botão "Salvar".
+     */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // Esse de inclusao, produto ainda nao existe
         if (obj == null) {
@@ -211,11 +234,12 @@ public class CadastrarProduto extends javax.swing.JDialog {
             }
 
             if (tipo.equals("Selecione o Tipo...") || preco <= 0 || quantidade <= 0 || descricao.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios.");
             } else {
                 // Passando os dados coletados da tela "CadastrarProduto" para o objeto "novoProduto"
                 Produto novoProduto = new Produto(tipo, preco, quantidade, descricao);
 
+                // Call your save method here
                 if (ProdutoDAO.salvar(novoProduto)) {
                     JOptionPane.showMessageDialog(null, "Salvo!");
                 } else {
@@ -261,11 +285,19 @@ public class CadastrarProduto extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
-
+    /**
+     * Método acionado ao selecionar um item no JComboBox.
+     *
+     * @param evt O evento associado ao JComboBox.
+     */
     private void cboTiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTiposActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboTiposActionPerformed
-
+    /**
+     * Método acionado ao pressionar o botão "Cancelar".
+     *
+     * @param evt O evento associado ao botão "Cancelar".
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
 
         dispose();

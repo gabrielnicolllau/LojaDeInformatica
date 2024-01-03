@@ -1,9 +1,25 @@
 package views;
 
+/**
+ * A classe InterfacePrincipal representa a tela principal da aplicação. Contém
+ * um menu rápido com opções para acessar funcionalidades da aplicação. Também é
+ * responsável por criar e exibir outras telas da aplicação, como a de vendas,
+ * clientes, produtos e relatórios.
+ *
+ * @author Gabriel
+ * @see JanelaControleProduto
+ * @see ViewConsultarCliente
+ * @see TelaRelatorioVenda
+ * @see TelaDeVenda
+ */
 public class InterfacePrincipal extends javax.swing.JFrame {
 
     private JanelaControleProduto novaTelaCadastroProduto; // Instância única da tela principal
 
+    /**
+     * Construtor padrão da classe. Inicializa a instância da tela de cadastro
+     * de produtos.
+     */
     public InterfacePrincipal() {
         initComponents();
         setLocationRelativeTo(null);
@@ -103,32 +119,56 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Método acionado ao pressionar o botão "Produtos" no menu rápido. Exibe a
+     * tela de controle de produtos.
+     *
+     * @param evt O evento associado ao botão "Produtos".
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Exibe a instância existente da tela de cadastro de produtos
         novaTelaCadastroProduto.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Clientes" no menu rápido. Exibe a
+     * tela de consulta de clientes.
+     *
+     * @param evt O evento associado ao botão "Clientes".
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         ViewConsultarCliente novaJanelaConsultarCliente = new ViewConsultarCliente();
         novaJanelaConsultarCliente.setVisible(true);
         novaJanelaConsultarCliente.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Relatórios" no menu rápido. Exibe
+     * a tela de relatório sintético.
+     *
+     * @param evt O evento associado ao botão "Relatórios".
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-        TelaRelatorioSintetico telaRelatorio = new TelaRelatorioSintetico();
+        TelaRelatorioVenda telaRelatorio = new TelaRelatorioVenda();
         telaRelatorio.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Método acionado ao pressionar o botão "Vendas" no menu rápido. Exibe a
+     * tela de vendas.
+     *
+     * @param evt O evento associado ao botão "Vendas".
+     */
     private void bntVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntVendasActionPerformed
-
         TelaDeVenda novaTelaDeVenda = new TelaDeVenda();
         novaTelaDeVenda.setVisible(true);
     }//GEN-LAST:event_bntVendasActionPerformed
 
+    /**
+     * Método principal para iniciar a aplicação.
+     *
+     * @param args Os argumentos da linha de comando.
+     */
     public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

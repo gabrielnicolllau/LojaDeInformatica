@@ -1,20 +1,39 @@
 package views;
 
-import sqlProdutoDAO.ClienteDAO;
+import sqlDAO.ClienteDAO;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import model.Cliente;
 
+/**
+ *
+ * @author caroline.csaldanha
+ * @see model.Cliente
+ * @see sqlDAO.ClienteDAO
+ */
+
+/**
+ * A classe ViewCadastro se trata da interface grafica para cadastro de clientes.
+ * Utilizada paramodificar dados de um cliente existente ou criar uma nova instância.
+ */
 public class ViewCadastro extends javax.swing.JFrame {
 
     Cliente obj = null;
-
+    
+/**
+ * Inicializa a interface de cadastro de clientes
+ */
     public ViewCadastro() {
 
         initComponents();
     }
-
-    public ViewCadastro(Cliente alterarCliente) { // Chamar a tela e passar objeto como parametro para carregar as informacoes dele
+    
+/**
+ * Permite a alteração dos dados de um cliente existente.
+ * @param alterarCliente - objeto Cliente a ser alterado.
+ * Chama a tela e passa o objeto como parametro para carregar as informacoes dele.
+ */
+    public ViewCadastro(Cliente alterarCliente) { // 
 
         initComponents();
 
@@ -419,58 +438,56 @@ public class ViewCadastro extends javax.swing.JFrame {
     private void txtBairroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBairroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBairroActionPerformed
-
+    
+/**
+ * Executa a ação quando o botão 'Salvar' é pressionado na interface.
+ * Coleta dados do campos de entrada, realiza as validações e salva
+ * ou altera um cliente no banco de dados.
+ * 
+ * @param evt - evento de clique associada ao botão salvar.
+ */
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+    //Coleta de dados    
+    String nome = txtNome.getText();
+    String email = txtEmail.getText();
+    String cpf = txtCPF.getText();
+    Date dataNasc = jdcDataNasc.getDate();
+    String sexo = boxSexo.getSelectedItem().toString();
+    String celular = txtCelular.getText();
+    String telefone = txtTelefone.getText();
+    String estadoCivil = boxEstadoCivil.getSelectedItem().toString();
+    String cep = txtCEP.getText();
+    String endereço = txtEndereço.getText();
+    String numero = txtNumero.getText();
+    String bairro = txtBairro.getText();
+    String cidade = txtCidade.getText();
+    String uf = boxUF.getSelectedItem().toString();
 
+/**
+ * Verificar se algum campo está vazio
+ */  
+    if (nome.isEmpty() || email.isEmpty() || cpf.isEmpty() || dataNasc == null || sexo.isEmpty() ||
+        celular.isEmpty() || telefone.isEmpty() || estadoCivil.isEmpty() || cep.isEmpty() || endereço.isEmpty() ||
+        numero.isEmpty() || bairro.isEmpty() || cidade.isEmpty() || uf.isEmpty()) {
+        JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos!");
+    } else {
+        // Se nenhum campo estiver vazio, continuar com a lógica de salvar ou alterar
         if (obj == null) {
-
-            String nome = txtNome.getText();
-            String email = txtEmail.getText();
-            String cpf = txtCPF.getText();
-            Date dataNasc = jdcDataNasc.getDate();//alterar depois para Date
-            String sexo = boxSexo.getSelectedItem().toString();
-            String celular = txtCelular.getText();
-            String telefone = txtTelefone.getText();
-            String estadoCivil = boxEstadoCivil.getSelectedItem().toString();
-            String cep = txtCEP.getText();
-            String endereço = txtEndereço.getText();
-            String numero = txtNumero.getText();
-            String bairro = txtBairro.getText();
-            String cidade = txtCidade.getText();
-            String uf = boxUF.getSelectedItem().toString();
-
-            //Passei os dados da tela para o objeto
+            // Lógica para salvar
             Cliente novoCliente = new Cliente(nome, email, cpf, dataNasc, sexo, celular, telefone, estadoCivil, cep, endereço,
                     numero, bairro, cidade, uf);
-
-            //Mandar o objeto para a classe DAOF
+            
+            //Tenta salvar o cliente
             boolean retorno = ClienteDAO.salvar(novoCliente);
-
-            if (retorno == true) {
+            
+            //Exibir mensagem de sucesso ou erro
+            if (retorno) {
                 JOptionPane.showMessageDialog(rootPane, "Cliente Cadastrado!: " + novoCliente.getIdCliente());
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos!");
+                JOptionPane.showMessageDialog(rootPane, "Falha ao cadastrar cliente!");
             }
-
         } else {
-            //Modo de alteração
-
-            //uso os dados que o usuário alterou na tela para atualizar o objeto
-            String nome = txtNome.getText();
-            String email = txtEmail.getText();
-            String cpf = txtCPF.getText();
-            Date dataNasc = jdcDataNasc.getDate();//alterar depois para Date
-            String sexo = boxSexo.getSelectedItem().toString();
-            String celular = txtCelular.getText();
-            String telefone = txtTelefone.getText();
-            String estadoCivil = boxEstadoCivil.getSelectedItem().toString();
-            String cep = txtCEP.getText();
-            String endereço = txtEndereço.getText();
-            String numero = txtNumero.getText();
-            String bairro = txtBairro.getText();
-            String cidade = txtCidade.getText();
-            String uf = boxUF.getSelectedItem().toString();
-
+            // Lógica para alterar um cliente existente
             obj.setNome(nome);
             obj.setEmail(email);
             obj.setCpf(cpf);
@@ -485,19 +502,20 @@ public class ViewCadastro extends javax.swing.JFrame {
             obj.setBairro(bairro);
             obj.setCidade(cidade);
             obj.setUf(uf);
-
-            //TODO: Chamar a DAO para alterar no banco
+            
+            //Tenta alterar o cliente
             boolean retorno = ClienteDAO.alterar(obj);
-
-            if (retorno == true) {
-                JOptionPane.showMessageDialog(rootPane, "Sucesso!");
+            
+            //Exibir mensagem de sucesso ou falha
+            if (retorno) {
+                JOptionPane.showMessageDialog(rootPane, "Cliente alterado com sucesso!");
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Falha");
+                JOptionPane.showMessageDialog(rootPane, "Falha ao alterar cliente!");
             }
 
             this.dispose();
-
         }
+    }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 
